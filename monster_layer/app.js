@@ -3,22 +3,34 @@ new Vue({
     data: {
         playerHealth: 100,
         monsterHealth: 100,
-        gameIsRunning: false
+        gameIsRunning: false,
+        turns: []
     },
     methods: {
         startGame: function() {
             this.gameIsRunning = true
             this.playerHealth = 100
             this.monsterHealth = 100
+            this.turns = []
         },
         attack: function() {
-            this.monsterHealth -= this.damage(10, 3)
+            var damage = this.damage(10, 3)
+            this.monsterHealth -= damage
+            this.turns.unshift({
+                isPlayer: true,
+                text: 'Player hits Monster for ' + damage
+            })
             if (this.isGameOver()) return 
             
             this.monsterAttacks()
         },
         specialAttack: function() {
-            this.monsterHealth -= this.damage(10, 20)
+            var damage = this.damage(20, 10)
+            this.monsterHealth -= damage
+            this.turns.unshift({
+                isPlayer: true,
+                text: 'Player hits Monster hard for ' + damage
+            })
             if (this.isGameOver()) return
             
             this.monsterAttacks()
@@ -26,13 +38,25 @@ new Vue({
         heal: function() {
             this.playerHealth = this.playerHealth > 90 ? 
                 100 : this.playerHealth + 10
+            this.turns.unshift({
+                isPlayer: true,
+                text: 'Player heals for 10'
+            })
             this.monsterAttacks()
         },
         giveUp: function() {
-            if (confirm('Are You Sure?')) this.gameIsRunning = false
+            if (confirm('Are You Sure?')) {
+                this.gameIsRunning = false
+                this.turns = []
+            }
         },
         monsterAttacks: function() {
-            this.playerHealth -= this.damage(12, 5)
+            var damage = this.damage(12, 5)
+            this.playerHealth -= damage
+            this.turns.unshift({
+                isPlayer: false,
+                text: 'Monster hits Player for ' + damage
+            })
             this.isGameOver()
         },
         damage: function(max, min) {
@@ -44,6 +68,7 @@ new Vue({
                     this.startGame()
                 } else {
                     this.gameIsRunning = false
+                    this.turns = []
                 }
                 return true
             } else if (this.playerHealth <= 0) {
@@ -51,6 +76,7 @@ new Vue({
                     this.startGame()
                 } else {
                     this.gameIsRunning = false
+                    this.turns = []
                 }
                 return true
             }
