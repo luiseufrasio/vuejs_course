@@ -15,3 +15,6 @@ Open package.json and add "dev": "cross-env NODE_ENV=development webpack-dev-ser
 npm run dev
 
 open vuejs-course-luiseufrasio.c9users.io in your browser
+
+git config --global user.name "your username"
+git config --global user.password "your password"
