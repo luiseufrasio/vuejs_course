@@ -1,5 +1,8 @@
 # vuejs_course
 
+https://github.com/vuejs/vue-cli
+https://cli.vuejs.org/guide/
+
 npm install -g vue-cli
 
 vue init webpack-simple monster_layer
